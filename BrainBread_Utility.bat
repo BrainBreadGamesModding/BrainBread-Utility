@@ -11,7 +11,7 @@ if exist "Half-Life" rmdir /q /s "Half-Life"
 echo Checking for updates...
 rem powershell -Command "Start-BitsTransfer -Source "https://github.com/Mythical-Github/BrainBread-Utility/releases/download/vStatic/BrainBread_Utility.bat"
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
-rem cls
+cls
 
 rem empty variables
 set scmd_exist=""
@@ -27,11 +27,8 @@ if not %scmd_exist% == "true" goto is_steamcmd_installed
 if not %hl_exist% == "true" goto is_half-life_installed
 if not %bb_exist% == "true" goto is_brainbread_installed
 
-rem Check Disk Space Before Installing Anything
-rem Tell Them Aprroximate Space To Be Taken Up Before Installing
-
 :main_menu
-rem cls
+cls
 echo.
 echo  	###############################################################################################################
 echo  	#                                                                                                             #
@@ -89,7 +86,7 @@ cd ..
 goto is_steamcmd_installed
 
 :install_half-life
-rem cls
+cls
 set /p user="What is your steam username?":
 set /p pass="What is your steam password?":
 call "SteamCMD/steamcmd.exe" +login "%user%" "%pass%" +force_install_dir "../Half-Life" +app_update 70 verify +exit
@@ -102,7 +99,7 @@ powershell -Command "Start-BitsTransfer -Source "%brainbread_1.2_zip%"
 goto is_brainbread_installed
 
 :uninstall_brainbread
-rem cls
+cls
 echo Are you sure you want to uninstall all brainbread related content?
 echo This will uninstall everything in the brainbread folder in your currently set half-life install
 echo as well as everything in the folder the bat file is ran from!
@@ -114,28 +111,7 @@ if exist "brainbread" del /s /q "brainbread"
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+exit /b
 
 
 
@@ -146,16 +122,5 @@ people who made brainbread
 steamcmd
 Zpin for brainbreadsteamicon fix
 to do: options for installing and launch mod tools
-
-exit /b
-
-
-
-
-
-
-
-
-
-
-
+rem Check Disk Space Before Installing Anything
+rem Tell Them Aprroximate Space To Be Taken Up Before Installing
