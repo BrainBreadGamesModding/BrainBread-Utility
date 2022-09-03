@@ -95,6 +95,8 @@ powershell -Command "Start-BitsTransfer -Source "%brainbread_1.2_zip%""
 powershell -Command "Expand-Archive -Force -LiteralPath brainbread-main.zip"
 if not exist "..\Half-Life\brainbread" mkdir "..\Half-Life\brainbread"
 xcopy /q /s /e /y "brainbread-main\brainbread-main\brainbread" "..\Half-Life\brainbread"
+xcopy /q /s /e /y "brainbread-main\brainbread-main\msvcp71.dll" "..\Half-Life\brainbread\msvcp71.dll"
+xcopy /q /s /e /y "brainbread-main\brainbread-main\msvcr71.dll" "..\Half-Life\brainbread\msvcr71.dll"
 cd ..
 if exist "temp" rmdir /q /s "temp"
 if exist "debug.log" del /q /s "debug.log"
