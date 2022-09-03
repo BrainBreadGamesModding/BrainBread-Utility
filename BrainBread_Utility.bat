@@ -2,6 +2,12 @@
 color 04
 Title BrainBread Utility
 cd %~dp0
+
+:testing_cleanup
+if exist "temp" rmdir /q /s "temp"
+if exist "SteamCMD" rmdir /q /s "SteamCMD"
+if exist "Half-Life" rmdir /q /s "Half-Life"
+
 echo Checking for updates...
 rem powershell -Command "Start-BitsTransfer -Source "https://github.com/Mythical-Github/BrainBread-Utility/releases/download/vStatic/BrainBread_Utility.bat"
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
@@ -18,11 +24,11 @@ set brainbread_1.2_zip="https://github.com/Mythical-Github/brainbread/releases/d
 
 :utility_setup_check
 if not %scmd_exist% == "true" goto is_steamcmd_installed
-pause
 if not %hl_exist% == "true" goto is_half-life_installed
 if not %bb_exist% == "true" goto is_brainbread_installed
 
 rem Check Disk Space Before Installing Anything
+rem Tell Them Aprroximate Space To Be Taken Up Before Installing
 
 :main_menu
 cls
@@ -58,31 +64,36 @@ del /q "Half-Life\brainbread\cl_dlls\client.dll.bak"
 goto exit
 
 :is_steamcmd_installed
-pause
-if %scmd_exist% == "false" goto install_steamcmd
 if exist "SteamCMD/steamcmd.exe" set scmd_exist="true"
+echo %scmd_exist%
 if %scmd_exist% == "true" goto utility_setup_check
+if %scmd_exist% == "false" goto install_steamcmd
 
 :is_half-life_installed
-if %hl_exist% =="false" goto install_half-life
 if exist "Half-Life/hl.exe" set hl_exist="true"
 if %hl_exist% =="true" goto utility_setup_check
+if %hl_exist% =="false" goto install_half-life
 
 :is_brainbread_installed
-if %bb_exist% =="false" goto install_brainbread
 if exist "Half-Life/brainbread/brainbread.wad" set bb_exist="true"
 if %bb_exist% =="true" goto utility_setup_check
+if %bb_exist% =="false" goto install_brainbread
 
 :install_steamcmd
-pause
 if not exist "temp" mkdir "temp"
 cd "temp"
+if not exist "..\SteamCMD" mkdir "..\SteamCMD"
 powershell -Command "Start-BitsTransfer -Source "%steamcmd_link%""
+powershell -Command "Expand-Archive -Force -LiteralPath steamcmd.zip"
+xcopy /q /s /e /y "steamcmd" "..\SteamCMD"
 cd ..
 goto is_steamcmd_installed
 
 :install_half-life
-
+cls
+set /p user="What is your steam username?":
+set /p pass="What is your steam password?":
+call "SteamCMD/steamcmd.exe" +login "%user%" "%pass%" +force_install_dir "../Half-Life" +app_update 70 verify +exit
 goto is_half-life_installed
 
 :install_brainbread
@@ -138,3 +149,14 @@ Zpin for brainbreadsteamicon fix
 to do: options for installing and launch mod tools
 
 exit /b
+
+
+
+
+
+
+
+
+
+
+
