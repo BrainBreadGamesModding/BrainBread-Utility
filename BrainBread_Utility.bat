@@ -3,7 +3,7 @@ color 04
 Title BrainBread Utility
 cd %~dp0
 echo Checking for updates...
-rem powershell -Command "Start-BitsTransfer -Source "https://github.com/Mythical-Github/BrainBread-Utility/releases/download/vStatic/BrainBread_Utility.bat"
+powershell -Command "Start-BitsTransfer -Source "https://github.com/Mythical-Github/BrainBread-Utility/releases/download/vStatic/BrainBread_Utility.bat"
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 cls
 
