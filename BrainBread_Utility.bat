@@ -7,12 +7,18 @@ rem powershell -Command "Start-BitsTransfer -Source "https://github.com/Mythical
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 cls
 
+rem empty variables
+set scmd_exist=""
+set hl_exist=""
+set bb_exist=""
+
 rem download link list
 set steamcmd_link="https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
 set brainbread_1.2_zip="https://github.com/Mythical-Github/brainbread/releases/download/v1.0/brainbread-main.zip"
 
 :utility_setup_check
 if not %scmd_exist% == "true" goto is_steamcmd_installed
+pause
 if not %hl_exist% == "true" goto is_half-life_installed
 if not %bb_exist% == "true" goto is_brainbread_installed
 
@@ -52,6 +58,7 @@ del /q "Half-Life\brainbread\cl_dlls\client.dll.bak"
 goto exit
 
 :is_steamcmd_installed
+pause
 if %scmd_exist% == "false" goto install_steamcmd
 if exist "SteamCMD/steamcmd.exe" set scmd_exist="true"
 if %scmd_exist% == "true" goto utility_setup_check
@@ -67,9 +74,10 @@ if exist "Half-Life/brainbread/brainbread.wad" set bb_exist="true"
 if %bb_exist% =="true" goto utility_setup_check
 
 :install_steamcmd
+pause
 if not exist "temp" mkdir "temp"
 cd "temp"
-powershell -Command "Start-BitsTransfer -Source "%steamcmd_link%"
+powershell -Command "Start-BitsTransfer -Source "%steamcmd_link%""
 cd ..
 goto is_steamcmd_installed
 
