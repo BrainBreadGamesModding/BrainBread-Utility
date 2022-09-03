@@ -44,6 +44,7 @@ if %ERRORLEVEL%==4 goto exit
 if not %scmd_exist% == "true" goto is_steamcmd_installed
 if not %hl_exist% == "true" goto is_half-life_installed
 if not %bb_exist% == "true" goto is_brainbread_installed
+goto main_menu
 
 :start_brainbread
 if not exist "Half-Life/brainbread/brainbread.wad" goto launch_warning
