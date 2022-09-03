@@ -16,19 +16,12 @@ rem download link list
 set steamcmd_link="https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
 set brainbread_1.2_zip="https://github.com/Mythical-Github/brainbread/releases/download/vStatic/brainbread-main.zip"
 
-goto main_menu
-
-:utility_setup_check
-if not %scmd_exist% == "true" goto is_steamcmd_installed
-if not %hl_exist% == "true" goto is_half-life_installed
-if not %bb_exist% == "true" goto is_brainbread_installed
-
 :main_menu
 cls
 echo.
 echo  	###############################################################################################################
 echo  	#                                                                                                             #
-echo  	#                           Choose options by typing in the corresponding number                              #
+echo  	#                             Choose options by typing in the corresponding number                            #
 echo  	#                                                                                                             #
 echo  	#        1)   Launch BrainBread                                                                               #
 echo  	#                                                                                                             #           
@@ -47,7 +40,13 @@ if %ERRORLEVEL%==2 goto utility_setup_check
 if %ERRORLEVEL%==3 goto uninstall_brainbread
 if %ERRORLEVEL%==4 goto exit
 
+:utility_setup_check
+if not %scmd_exist% == "true" goto is_steamcmd_installed
+if not %hl_exist% == "true" goto is_half-life_installed
+if not %bb_exist% == "true" goto is_brainbread_installed
+
 :start_brainbread
+if not exist "Half-Life/brainbread/brainbread.wad" goto launch_warning
 "Half-Life\hl.exe" -game brainbread +maxplayers 12
 goto exit
 
@@ -81,9 +80,19 @@ goto is_steamcmd_installed
 :install_half-life
 if not exist "Half-Life" mkdir "Half-Life"
 cls
-set /p user="What is your steam username?":
+echo  	###############################################################################################################
+echo  	#                                                                                                             #
+echo  	#                                         What is your steam username?                                        #
+echo  	#                                                                                                             #
+echo 	###############################################################################################################
+set /p user=
 cls
-set /p pass="What is your steam password?":
+echo  	###############################################################################################################
+echo  	#                                                                                                             #
+echo  	#                                         What is your steam password?                                        #
+echo  	#                                                                                                             #
+echo 	###############################################################################################################
+set /p pass=
 cls
 call "SteamCMD/steamcmd.exe" +login "%user%" "%pass%" +force_install_dir "../Half-Life" +app_update 70 +exit
 goto is_half-life_installed
@@ -95,24 +104,54 @@ powershell -Command "Start-BitsTransfer -Source "%brainbread_1.2_zip%""
 powershell -Command "Expand-Archive -Force -LiteralPath brainbread-main.zip"
 if not exist "..\Half-Life\brainbread" mkdir "..\Half-Life\brainbread"
 xcopy /q /s /e /y "brainbread-main\brainbread-main\brainbread" "..\Half-Life\brainbread"
-xcopy /q /s /e /y "brainbread-main\brainbread-main\msvcp71.dll" "..\Half-Life\brainbread\msvcp71.dll"
-xcopy /q /s /e /y "brainbread-main\brainbread-main\msvcr71.dll" "..\Half-Life\brainbread\msvcr71.dll"
-cd ..
+copy /y "brainbread-main\brainbread-main\msvcp71.dll" "..\Half-Life\msvcp71.dll"
+copy /y "brainbread-main\brainbread-main\msvcr71.dll" "..\Half-Life\msvcr71.dll"
+cd %~dp0
 if exist "temp" rmdir /q /s "temp"
+if exist "SteamCMD" rmdir /q /s "SteamCMD"
+if exist "htmlcache" rmdir /q /s "htmlcache"
 if exist "debug.log" del /q /s "debug.log"
 if exist "steam_appid.txt" del /q /s "steam_appid.txt"
-if exist "htmlcache" rmdir /q /s "htmlcache"
 goto is_brainbread_installed
 
 :uninstall_brainbread
 cls
-echo Are you sure you want to uninstall all brainbread related content?
-echo This will uninstall everything in the brainbread folder in your currently set half-life install
-echo as well as everything in the folder the bat file is ran from!
-set /p uninstall_answer=
-if not %uninstall_answer% == "1" goto main_menu
-cd %half-life_install%
-if exist "brainbread" del /s /q "brainbread"
+echo  	###############################################################################################################
+echo  	#                                                                                                             #
+echo  	#                      Are you sure you want to uninstall all brainbread related content?                     #
+echo  	#       This will uninstall everything in the brainbread folder in your currently set half-life install       #
+echo  	#                        as well as everything in the folder the bat file is ran from!                        #
+echo  	#                                                                                                             #
+echo  	#                             Choose options by typing in the corresponding number                            #
+echo 	#                                                                                                             #
+echo  	#                                                                                                             #
+echo  	#        1)   Yes                                                                                             #
+echo  	#                                                                                                             #           
+echo  	#        2)   No                                                                                              #
+echo  	#                                                                                                             #
+echo 	###############################################################################################################
+choice /n /c 12 > NUL
+if %ERRORLEVEL%==2 goto main_menu
+cd %~dp0
+cd "Half-Life"
+if exist "brainbread" rmdir /q /s "brainbread"
+
+:launch_warning
+cls
+echo  	###############################################################################################################
+echo  	#                                                                                                             #
+echo  	#                       You have tried launching BrainBread without having it installed                       #
+echo  	#                                    Try installing it from the menu first                                    #
+echo 	#                                                                                                             #
+echo 	###############################################################################################################
+pause
+goto main_menu
 
 :exit
+cd %~dp0
+if exist "temp" rmdir /q /s "temp"
+if exist "SteamCMD" rmdir /q /s "SteamCMD"
+if exist "htmlcache" rmdir /q /s "htmlcache"
+if exist "debug.log" del /q /s "debug.log"
+if exist "steam_appid.txt" del /q /s "steam_appid.txt"
 exit /b
