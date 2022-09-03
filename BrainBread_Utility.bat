@@ -3,7 +3,7 @@ color 04
 Title BrainBread Utility
 cd %~dp0
 echo Checking for updates...
-powershell -Command "Start-BitsTransfer -Source "https://github.com/Mythical-Github/BrainBread-Utility/releases/download/vStatic/BrainBread_Utility.bat"
+rem powershell -Command "Start-BitsTransfer -Source "https://github.com/Mythical-Github/BrainBread-Utility/releases/download/vStatic/BrainBread_Utility.bat"
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 cls
 
@@ -67,7 +67,10 @@ if exist "Half-Life/brainbread/brainbread.wad" set bb_exist="true"
 if %bb_exist% =="true" goto utility_setup_check
 
 :install_steamcmd
-
+if not exist "temp" mkdir "temp"
+cd "temp"
+powershell -Command "Start-BitsTransfer -Source "%steamcmd_link%"
+cd ..
 goto is_steamcmd_installed
 
 :install_half-life
@@ -75,17 +78,21 @@ goto is_steamcmd_installed
 goto is_half-life_installed
 
 :install_brainbread
-
+if not exist "temp" mkdir "temp"
+cd "temp"
+powershell -Command "Start-BitsTransfer -Source "%brainbread_1.2_zip%"
 goto is_brainbread_installed
 
 :uninstall_brainbread
 cls
 echo Are you sure you want to uninstall all brainbread related content?
 echo This will uninstall everything in the brainbread folder in your currently set half-life install
-echo as well as everything in the folder the bat file is ran from
+echo as well as everything in the folder the bat file is ran from!
 echo
 cd %half-life_install%
 if exist "brainbread" del /s /q "brainbread"
+
+:credits
 
 
 
