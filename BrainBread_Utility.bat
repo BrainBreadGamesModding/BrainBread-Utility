@@ -1,6 +1,17 @@
 @echo off
+color 0A
+Title BrainBread Utility
+echo Checking for updates...
+powershell -Command "Start-BitsTransfer -Source "https://github.com/Mythical-Github/BrainBread-Utility/releases/download/vStatic/BrainBread_Utility.bat"
+cls
+if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
+cd %~dp0
+cls
 
-rem add self updating link here
+
+
+
+
 
 rem add settings loading and creation
 rem for now that is install location
