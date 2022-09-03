@@ -157,3 +157,8 @@ if exist "htmlcache" rmdir /q /s "htmlcache"
 if exist "debug.log" del /q /s "debug.log"
 if exist "steam_appid.txt" del /q /s "steam_appid.txt"
 exit /b
+
+rem mod sites to parse
+https://www.ironoak.ch/BB/index.php?page=maps&sort=date&order=desc&start=0
+https://gamebanana.com/games/39
+https://www.moddb.com/mods/brainbread/addons
