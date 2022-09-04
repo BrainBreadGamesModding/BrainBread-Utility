@@ -10,11 +10,16 @@ cls
 rem empty variables
 set scmd_exist=""
 set hl_exist=""
+set hl_sdk_exist=""
 set bb_exist=""
 
 rem download link list
 set steamcmd_link="https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
 set brainbread_1.2_zip="https://github.com/Mythical-Github/brainbread/releases/download/vStatic/brainbread-main.zip"
+
+rem steam app ids
+set hl_id="70"
+set hl_sdk_id="254430"
 
 :main_menu
 cls
@@ -27,9 +32,11 @@ echo  	#        1)   Launch BrainBread                                          
 echo  	#                                                                                                             #           
 echo  	#        2)   Install BrainBread (BrainBread, Fixes, Mods, etc...)                                            #
 echo  	#                                                                                                             #
-echo  	#        3)   Uninstall All BreadBread Content                                                                #
+echo  	#        3)   Install BrainBread Content For Modders                                                          #
+echo  	#                                                                                                             #
+echo  	#        4)   Uninstall All BreadBread Content                                                                #
 echo 	#                                                                                                             #
-echo 	#        4)   Exit                                                                                            #
+echo 	#        5)   Exit                                                                                            #
 echo 	#                                                                                                             #
 echo 	###############################################################################################################
 echo.
@@ -37,8 +44,9 @@ echo.
 choice /n /c 1234 > NUL
 if %ERRORLEVEL%==1 goto start_brainbread
 if %ERRORLEVEL%==2 goto utility_setup_check
-if %ERRORLEVEL%==3 goto uninstall_brainbread
-if %ERRORLEVEL%==4 goto exit
+if %ERRORLEVEL%==3 goto is_half-life_sdk_installed
+if %ERRORLEVEL%==4 goto uninstall_brainbread
+if %ERRORLEVEL%==5 goto exit
 
 :utility_setup_check
 if not %scmd_exist% == "true" goto is_steamcmd_installed
@@ -68,7 +76,14 @@ if exist "Half-Life/brainbread/brainbread.wad" set bb_exist="true"
 if %bb_exist% =="true" goto utility_setup_check
 goto install_brainbread
 
+:is_half-life_sdk_installed
+cd %~dp0
+if exist "Half-Life SDK\Hammer Editor\hammer.exe" set hl_sdk_exist="true"
+if %hl_sdk_exist% =="true" goto main_menu
+goto install_brainbread_modding_content
+
 :install_steamcmd
+cd %~dp0
 if not exist "temp" mkdir "temp"
 cd "temp"
 if not exist "..\SteamCMD" mkdir "..\SteamCMD"
@@ -76,6 +91,8 @@ powershell -Command "Start-BitsTransfer -Source "%steamcmd_link%""
 powershell -Command "Expand-Archive -Force -LiteralPath steamcmd.zip"
 xcopy /q /s /e /y "steamcmd" "..\SteamCMD"
 cd %~dp0
+if exist "SteamCMD/steamcmd.exe" set scmd_exist="true"
+if %temp_1% == "1" goto install_brainbread_modding_content
 goto is_steamcmd_installed
 
 :install_half-life
@@ -95,7 +112,7 @@ echo  	#                                                                        
 echo 	###############################################################################################################
 set /p pass=
 cls
-call "SteamCMD/steamcmd.exe" +login "%user%" "%pass%" +force_install_dir "../Half-Life" +app_update 70 +exit
+call "SteamCMD/steamcmd.exe" +login "%user%" "%pass%" +force_install_dir "../Half-Life" +app_update %hl_id% +exit
 goto is_half-life_installed
 
 :install_brainbread
@@ -114,6 +131,31 @@ if exist "htmlcache" rmdir /q /s "htmlcache"
 if exist "debug.log" del /q /s "debug.log"
 if exist "steam_appid.txt" del /q /s "steam_appid.txt"
 goto is_brainbread_installed
+
+:install_brainbread_modding_content
+cd %~dp0
+set temp_1="0"
+if not %scmd_exist% == "true" set temp_1="1"
+if %temp_1% == "1" goto install_steamcmd
+if %hl_sdk_exist% == "true" goto main_menu
+if not exist "Half-Life SDK" mkdir "Half-Life SDK"
+cls
+echo  	###############################################################################################################
+echo  	#                                                                                                             #
+echo  	#                                         What is your steam username?                                        #
+echo  	#                                                                                                             #
+echo 	###############################################################################################################
+set /p user=
+cls
+echo  	###############################################################################################################
+echo  	#                                                                                                             #
+echo  	#                                         What is your steam password?                                        #
+echo  	#                                                                                                             #
+echo 	###############################################################################################################
+set /p pass=
+cls
+call "SteamCMD/steamcmd.exe" +login "%user%" "%pass%" +force_install_dir "../Half-Life SDK" +app_update %hl_sdk_id% +exit
+goto is_half-life_sdk_installed
 
 :uninstall_brainbread
 cls
@@ -157,8 +199,3 @@ if exist "htmlcache" rmdir /q /s "htmlcache"
 if exist "debug.log" del /q /s "debug.log"
 if exist "steam_appid.txt" del /q /s "steam_appid.txt"
 exit /b
-
-rem mod sites to parse
-https://www.ironoak.ch/BB/index.php?page=maps&sort=date&order=desc&start=0
-https://gamebanana.com/games/39
-https://www.moddb.com/mods/brainbread/addons
