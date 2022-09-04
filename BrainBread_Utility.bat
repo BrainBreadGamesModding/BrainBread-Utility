@@ -42,7 +42,7 @@ echo 	#                                                                         
 echo 	###############################################################################################################
 echo.
 
-choice /n /c 1234 > NUL
+choice /n /c 12345 > NUL
 if %ERRORLEVEL%==1 goto start_brainbread
 if %ERRORLEVEL%==2 goto utility_setup_check
 if %ERRORLEVEL%==3 goto is_half-life_sdk_installed
