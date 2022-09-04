@@ -12,6 +12,7 @@ set scmd_exist=""
 set hl_exist=""
 set hl_sdk_exist=""
 set bb_exist=""
+set temp_1=""
 
 rem download link list
 set steamcmd_link="https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
@@ -91,7 +92,7 @@ powershell -Command "Start-BitsTransfer -Source "%steamcmd_link%""
 powershell -Command "Expand-Archive -Force -LiteralPath steamcmd.zip"
 xcopy /q /s /e /y "steamcmd" "..\SteamCMD"
 cd %~dp0
-if exist "SteamCMD/steamcmd.exe" set scmd_exist="true"
+if exist "SteamCMD\steamcmd.exe" set scmd_exist="true"
 if %temp_1% == "1" goto install_brainbread_modding_content
 goto is_steamcmd_installed
 
