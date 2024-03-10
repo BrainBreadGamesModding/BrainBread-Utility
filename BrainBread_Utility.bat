@@ -3,7 +3,7 @@ color 04
 Title BrainBread Utility
 cd %~dp0
 echo Checking for updates...
-powershell -Command "Start-BitsTransfer -Source "https://github.com/Mythical-Github/BrainBread-Utility/releases/download/vStatic/BrainBread_Utility.bat"
+powershell -Command "Start-BitsTransfer -Source "https://github.com/BrainBreadGamesModding/BrainBread-Utility/releases/download/vStatic/BrainBread_Utility.bat"
 if not "%1" == "max" start /MAX cmd /c %0 max & exit/b
 cls
 
@@ -16,7 +16,7 @@ set temp_1=""
 
 rem download link list
 set steamcmd_link="https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip"
-set brainbread_1.2_zip="https://github.com/Mythical-Github/brainbread/releases/download/vStatic/brainbread-main.zip"
+set brainbread_1.2_zip="https://github.com/BrainBreadGamesModding/brainbread/releases/download/vStatic/brainbread-main.zip"
 
 rem steam app ids
 set hl_id="70"
